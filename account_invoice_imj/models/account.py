@@ -7,7 +7,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     l10n_mx_edi_payment_policy = fields.Selection(selection=[('PPD', 'PPD'), ('PUE', 'PUE')], string='Método de Pago',
-                                          default='PPD', store=True, required=True)
+                                          default='PPD', store=True, required=False)
     l10n_mx_edi_cfdi_uuid = fields.Char(string='Fiscal Folio', copy=False, readonly=False,
                                         help='Folio in electronic invoice, is returned by SAT when send to stamp.',
                                         compute=False)
@@ -15,7 +15,7 @@ class AccountMove(models.Model):
     def _l10n_mx_edi_get_payment_policy(self):
         self.ensure_one()
         # Se sobreescribe funcion original que calculaba, ahora es totalemente seleccionable
-        if self.type == 'out_refund':
+        if self.move_type == 'out_refund':
             self.l10n_mx_edi_payment_policy = 'PUE'
             return 'PUE'
         else:
