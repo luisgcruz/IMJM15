@@ -12,4 +12,5 @@
         'views/purchase_order_view.xml',
         'views/purchase_order_report_templates.xml',
     ],
+    'license': 'LGPL-3',
 }
