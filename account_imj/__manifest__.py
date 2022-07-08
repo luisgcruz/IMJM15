@@ -13,6 +13,7 @@
     'website': 'https://www.odoo.com/',
     'depends' : ['account','purchase','budget_purchase_imj'],
     'data': ['views/account_view.xml',
+             'data/retraducir_cron.xml',
             #'views/purchase_order_view.xml',
             ],
     'demo': [],

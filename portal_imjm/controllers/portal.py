@@ -14,8 +14,8 @@ from odoo.addons.web.controllers.main import Binary
 
 class CustomerPortal(CustomerPortal):
 
-    def _prepare_home_portal_values(self):
-        values = super(CustomerPortal, self)._prepare_home_portal_values()
+    def _prepare_home_portal_values(self, counters):
+        values = super(CustomerPortal, self)._prepare_home_portal_values(counters)
         #if 'pagos_count' in counters:
         partner_id = request.env.user.partner_id.parent_id and request.env.user.partner_id.parent_id.id or request.env.user.partner_id.id
         if not request.env.user.has_group('base.group_portal'):

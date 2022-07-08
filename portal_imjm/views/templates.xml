@@ -16,7 +16,7 @@
             <input type="text" name="name" t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}" t-att-value="name or partner.name" t-att-readonly="1"/>
         </xpath>
         <xpath expr="//input[@name='company_name']" position="replace">
-            <input t-else="" type="text" name="company_name" t-attf-class="form-control #{error.get('company_name') and 'is-invalid' or ''}" t-att-value="company_name or partner.commercial_company_name" t-att-readonly="1"/>
+            <input type="text" name="company_name" t-attf-class="form-control #{error.get('company_name') and 'is-invalid' or ''}" t-att-value="company_name or partner.commercial_company_name" t-att-readonly="1"/>
         </xpath>
         <xpath expr="//input[@name='vat']" position="replace">
             <input type="text" name="vat" t-attf-class="form-control #{error.get('vat') and 'is-invalid' or ''}" t-att-value="vat or partner.vat" t-att-readonly="1" t-att-title="vat_not_editable_message"/>
@@ -134,6 +134,21 @@
             </form>
         </xpath>
     </template>
+    <!-- Eliminar elementos sobrantes de la lista home del portal-->
+    <template id="purchase.portal_my_home_purchase" name="Show Requests for Quotation / Purchase Orders" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Compras</t>
+                <t t-set="url" t-value="'/my/purchase'"/>
+                <t t-set="placeholder_count" t-value="'purchase_count'"/>
+            </t>
+        </xpath>
+      </template>
+    <template id="sale.portal_my_home_sale" name="Show Quotations / Sales Orders" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <div></div>
+        </xpath>
+    </template>
     <!-- Agregar menuitem-->
     <template id="portal_my_home_menu_pagos" name="Portal layout : pagos menu entries" inherit_id="portal.portal_breadcrumbs" priority="30">
         <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
@@ -151,7 +166,7 @@
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Pagos de proveedor</t>
                 <t t-set="url" t-value="'/my/pago'"/>
-                <t t-set="count" t-value="pagos_count"/>
+                <t t-set="placeholder_count" t-value="pagos_count"/>
             </t>
         </xpath>
     </template>
@@ -350,6 +365,22 @@
                         <img t-else="" class="rounded-circle mt-1 o_portal_contact_img" src="/web/static/src/img/user_menu_avatar.png" alt="Contacto"/>
                     </div>
                     <div class="col pl-0">
+                        Equipo de Soporte<br/>
+                        <a href="#discussion" class="small"><i class="fa fa-fw fa-comments"/><b>Enviar Mensaje</b></a>
+                    </div>
+                </div>
+            </li>
+        </xpath>
+    </template>
+    <template id="portal_imjm_template_purchase_contact" inherit_id="purchase.portal_my_purchase_order">
+        <xpath expr="//ul/li[3]" position="replace">
+            <li t-if="order.user_id" class="list-group-item flex-grow-1">
+                <div class="small mb-1"><strong class="text-muted">Contacto de soporte</strong></div>
+                <div class="row flex-nowrap">
+                    <div class="col flex-grow-0 pr-2">
+                        <img class="rounded-circle mr4 float-left o_portal_contact_img" t-att-src="image_data_uri(order.user_id.avatar_1024)" alt="Contact"/>
+                    </div>
+                    <div class="col pl-0" style="min-width: 150px">
                         Equipo de Soporte<br/>
                         <a href="#discussion" class="small"><i class="fa fa-fw fa-comments"/><b>Enviar Mensaje</b></a>
                     </div>

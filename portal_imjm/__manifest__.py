@@ -11,7 +11,7 @@
     'depends': ['purchase','portal','l10n_mx_edi'],
     'data': [
         'security/product_security_group.xml',
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'edi/checar_opinion_sat_action_data.xml',
         'views/templates.xml',
         'views/res_partner_view.xml',

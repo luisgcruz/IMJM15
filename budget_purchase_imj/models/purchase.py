@@ -32,7 +32,7 @@ class ProductTemplate(models.Model):
 class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
 
-    cost_edit = fields.Boolean(relation='product_id.cost_edit', string='Modificar Costo', copy=False)
+    cost_edit = fields.Boolean(related='product_id.cost_edit', string='Modificar Costo', copy=False)
 
     @api.onchange('product_id')
     def onchange_product_id(self):
@@ -88,20 +88,20 @@ class PurchaseOrder(models.Model):
     def onchange_approval(self):
         for order in self:
             categ=False
-            if not order.release_date:
-                raise UserError(('No tienes fecha de liberación, no puedes dar el VoBo'))
-            if order.release_date > fields.Date.today():
-                raise UserError(('La fecha de liberación, debe ser menor o igual a hoy'))
-            for line in order.order_line:
-                if categ and line.product_id.categ_id.id != categ.id:
-                    raise UserError(('Diferentes categorias de productos en las lineas'))
-                else:
-                    categ=line.product_id.categ_id
-            
-            if categ and self._uid not in categ.users_aprov_ids.ids and self._uid not in categ.users_limit_ids.ids:
-                raise UserError(('Usuario sin perimosos para dar el visto bueno'))
-            if categ and self.amount_total > categ.limit_purchase and self._uid not in categ.users_limit_ids.ids:
-                raise UserError(('Usuario sin perimosos para dar el visto bueno con monto superior ($ %.0f) de la categoria'%categ.limit_purchase))
+            if order.ids:
+                if not order.release_date:
+                    raise UserError(('No tienes fecha de liberación, no puedes dar el VoBo'))
+                if order.release_date > fields.Date.today():
+                    raise UserError(('La fecha de liberación, debe ser menor o igual a hoy'))
+                for line in order.order_line:
+                    if categ and line.product_id.categ_id.id != categ.id:
+                        raise UserError(('Diferentes categorias de productos en las lineas'))
+                    else:
+                        categ=line.product_id.categ_id
+                if categ and self._uid not in categ.users_aprov_ids.ids and self._uid not in categ.users_limit_ids.ids:
+                    raise UserError(('Usuario sin perimosos para dar el visto bueno'))
+                if categ and self.amount_total > categ.limit_purchase and self._uid not in categ.users_limit_ids.ids:
+                    raise UserError(('Usuario sin perimosos para dar el visto bueno con monto superior ($ %.0f) de la categoria'%categ.limit_purchase))
             
 
     def button_confirm(self):

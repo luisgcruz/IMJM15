@@ -49,7 +49,7 @@ class CrossoveredBudgetLines(models.Model):
     amount_purchase = fields.Float(string='Importe Compras')
     qty = fields.Float(string='Cantidad')
     price = fields.Float(string='Precio')
-    duration = fields.Integer(strin='Duración', compute='_compute_duration_imj')
+    duration = fields.Integer(string='Duración', compute='_compute_duration_imj')
     planned_amount = fields.Monetary(
         'Cantidad Planeada', required=True,
         help="Cantidad planeada para ganar/gastar. Registra una cantidad positiva si es una ganancia o una negativa si es un gasto.")
