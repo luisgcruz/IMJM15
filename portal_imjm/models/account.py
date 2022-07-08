@@ -15,7 +15,7 @@ class AccountMove(models.Model):
 
 
     def action_post(self):
-        if self.type == 'in_invoice':
+        if self.move_type == 'in_invoice':
             if self.purchase_from_portal_id and self.purchase_from_portal_id.state not in ['purchase','done']:
                 raise UserError('La factura no se puede aprobar porque su órden de compra no está en estado <confirmado>.')
             self.estado_factura_portal = 'aceptado'
@@ -33,7 +33,7 @@ class AccountMove(models.Model):
         factura = self.env['account.move'].create({
             'partner_id': order_rec.partner_id.id,
             'purchase_id': order_rec.id,
-            'type': 'in_invoice',
+            'move_type': 'in_invoice',
             'date': fields.Date.today(),
             'invoice_origin': order_rec.name,
         })

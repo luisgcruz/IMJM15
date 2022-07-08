@@ -336,12 +336,15 @@
         <xpath expr="//th[hasclass('d-md-table-cell')]" position="replace">
             <th class='d-none d-md-table-cell'>Fecha de aprobación</th>
         </xpath>
+        <xpath expr="//th[4]" position="replace">
+            <th class='d-none d-md-table-cell'>Estado del pago</th>
+        </xpath>
         <xpath expr="//tbody/t/tr/td[4]" position="replace">
             <td class="tx_status" style="color:black">
-                <t t-if="invoice.state == 'posted' and invoice.invoice_payment_state != 'paid'">
+                <t t-if="invoice.state == 'posted' and invoice.payment_state != 'paid'">
                     <span class="badge badge-pill badge-info"><i class="fa fa-fw fa-clock-o" aria-label="Opened" title="Opened" role="img"/><span class="d-none d-md-inline"> Pendiente de pago</span></span>
                 </t>
-                <t t-if="invoice.state == 'posted' and invoice.invoice_payment_state == 'paid'">
+                <t t-if="invoice.state == 'posted' and invoice.payment_state == 'paid'">
                     <span class="badge badge-pill badge-success"><i class="fa fa-fw fa-check" aria-label="Paid" title="Paid" role="img"/><span class="d-none d-md-inline"> Pagada</span></span>
                 </t>
                 <t t-if="invoice.state == 'cancel'">
