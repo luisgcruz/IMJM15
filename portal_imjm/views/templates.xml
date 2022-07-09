@@ -166,7 +166,7 @@
             <t t-call="portal.portal_docs_entry">
                 <t t-set="title">Pagos de proveedor</t>
                 <t t-set="url" t-value="'/my/pago'"/>
-                <t t-set="placeholder_count" t-value="pagos_count"/>
+                <t t-set="placeholder_count" t-value="'pagos_count'"/>
             </t>
         </xpath>
     </template>
@@ -194,7 +194,7 @@
                                 </a>
                             </td>
                             <td class="text-right">
-                                <span t-field="order.payment_date"/>
+                                <span t-field="order.date"/>
                             </td>
                             <td>
                                 <t t-esc="order.partner_id.name"/>
@@ -275,13 +275,13 @@
                               <strong class="d-block mb-1">Pago de:</strong>
                               <span t-field="order.partner_id.name"/><br/>
                               <div t-att-class="'d-inline'">
-                                  <strong>Dia del pago: </strong><span class="ml-1" t-field="order.payment_date" t-options='{"widget": "date"}'/>
+                                  <strong>Dia del pago: </strong><span class="ml-1" t-field="order.date" t-options='{"widget": "date"}'/>
                               </div><br/>
                               <div t-att-class="'d-inline'">
                                   <strong>Monto total: </strong> <h3 class="font-weight-normal"><span t-field="order.amount" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/> </h3>
                               </div>
                               <div t-att-class="'d-inline'">
-                                  <strong>Referencia factura: </strong> <span class="ml-1" t-field="order.communication"/>
+                                  <strong>Referencia factura: </strong> <span class="ml-1" t-field="order.ref"/>
                               </div><br/>
                               <div t-att-class="'d-inline'">
                                   <strong>Forma de pago: </strong> <span class="ml-1" t-field="order.l10n_mx_edi_payment_method_id.name"/>
