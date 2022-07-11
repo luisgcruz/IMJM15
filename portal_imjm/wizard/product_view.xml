@@ -27,7 +27,7 @@
 		</record>
 
 		<menuitem action="producto_sat_aceptable_act_win" id="menu_producto_sat_aceptable_wiz"
-			parent="purchase.menu_purchase_products"/>
+			parent="purchase.menu_purchase_products" groups="portal_imjm.group_modificar_codigos_sat_aceptables"/>
 
 	</data>
 </odoo>

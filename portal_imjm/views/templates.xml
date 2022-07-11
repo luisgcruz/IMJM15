@@ -134,6 +134,15 @@
             </form>
         </xpath>
     </template>
+    <template id="portal_imjm_template_purchase_order_content" inherit_id="purchase.purchase_order_portal_content">
+        <xpath expr="//div[@id='total']" position="replace">
+            <div id="total" t-if="order.state not in ['cancel']" class="row" name="total2" style="page-break-inside: avoid;">
+                <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'} ml-auto">
+                    <t t-call="purchase.purchase_order_portal_content_totals_table"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
     <!-- Eliminar elementos sobrantes de la lista home del portal-->
     <template id="purchase.portal_my_home_purchase" name="Show Requests for Quotation / Purchase Orders" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">

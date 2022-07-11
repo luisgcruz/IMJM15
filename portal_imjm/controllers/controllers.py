@@ -88,7 +88,7 @@ class CustomerPortal(CustomerPortal):
             if order_sudo.invoice_status == 'invoiced':
                 values['upload_status_msg'] = 'Error de usuario! El pedido de compra ya cuenta con una factura activa previa.'
             else:
-                new_inv = order_sudo.action_create_invoice_po_v14(order_sudo)
+                new_inv = order_sudo.action_create_invoice()
                 if new_inv:
                     new_inv.l10n_mx_edi_cfdi_uuid = validacion[1] #no esta funcionando en v13
                     new_inv.date = validacion[2]
@@ -112,7 +112,6 @@ class CustomerPortal(CustomerPortal):
                             'type': 'binary'
                         })
                     order_sudo.invoice_status = 'invoiced'
-                    new_inv.l10n_mx_edi_cfdi_name = validacion[1] + '.xml'
                 values['upload_status_msg'] = 'Correcto'
         else:
             values['upload_status_msg'] = errores
@@ -147,7 +146,8 @@ class CustomerPortal(CustomerPortal):
             if purch_order_rec.partner_id.vat and (purch_order_rec.partner_id.vat.upper() != rfc_emisor):
                 errores += '\n -El RFC del proveedor del xml no coincide con el del sistema. (%s vs %s) '%(rfc_emisor, purch_order_rec.partner_id.vat)
                 conteoe += 1
-            if purch_order_rec.company_id.vat.upper() != rfc_receptor:
+            rfc_local = purch_order_rec.company_id.vat or 'sin rfc'
+            if rfc_local.upper() != rfc_receptor:
                 errores += '\n -El RFC del receptor del xml no coincide con el del sistema. (%s vs %s) '%(rfc_receptor, purch_order_rec.company_id.vat)
                 conteoe += 1
         else:
@@ -160,7 +160,7 @@ class CustomerPortal(CustomerPortal):
             errores += '\n -El monto del xml no coincide con el total de la orden de compra. (%s vs %s) ' % (monto_xml, monto_orden)
             conteoe += 1
         #comienza chequeo de que sea un producto aceptable
-        product_sat_obj = request.env['l10n_mx_edi.product.sat.code']
+        product_sat_obj = request.env['product.unspsc.code']
         aceptados = product_sat_obj.search([('aceptable', '=', True)])
         lista_codigos = [x.code for x in aceptados]
         for e in xml_tree.findall('.//'):
@@ -183,7 +183,7 @@ class CustomerPortal(CustomerPortal):
             nombre_arch = xml_tree.attrib['Serie'] + xml_tree.attrib['Folio']
         except:
             nombre_arch = uuid_factura
-        facturas_cargadas = acc_move_obj.search([('l10n_mx_supplier_cfdi_uuid', '=', uuid_factura), ('type', '=', 'in_invoice')])
+        facturas_cargadas = acc_move_obj.search([('l10n_mx_supplier_cfdi_uuid', '=', uuid_factura), ('move_type', '=', 'in_invoice')])
         if facturas_cargadas:
             for factura in facturas_cargadas:
                 errores += '\n -El UUID %s ya fue cargado en la factura %s.' % (uuid_factura, factura.name)
