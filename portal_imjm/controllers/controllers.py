@@ -326,7 +326,6 @@ class CustomerPortal(CustomerPortal):
         uuid_factura = ''
         facturas_sin_uuid = ''
         for linea in acc_paymnt_rec.reconciled_bill_ids:
-            print(linea)
             if not linea.l10n_mx_edi_cfdi_uuid:
                 facturas_sin_uuid = facturas_sin_uuid + linea.name + ' '
                 conteoe += 1

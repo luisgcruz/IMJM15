@@ -69,7 +69,7 @@
         <xpath expr="//t/t/t/tr" position="replace">
             <t t-if="order.release_date"><!-- analizar tambien que el invoice status NO sea facturado-->
                 <t t-if="order.approval is True">
-                    <t t-if="order.invoice_status != 'a'">
+                    <t t-if="order.invoice_status != 'invoiced'">
                         <tr t-if="order.release_date &lt;= order.release_date.today() + relativedelta(day=1, months=1, days=-1)">
                             <td>
                                 <a t-att-href="order.get_portal_url()">
