@@ -239,15 +239,11 @@ class CustomerPortal(CustomerPortal):
             # fin analisis de pdf, comienza xml
             file = post.get('adjunto_xml')
             attachment = file.read()
-            #mimetype = guess_mimetype(base64.b64decode(base64.encodebytes(attachment)))
-            #if mimetype in File_xml_type: #la validacion ya la hace metodo validar xml pago
             validacion = self.validar_xml_pago(attachment, order_sudo)
             if validacion[0]:
                 errores += 'Error en xml! ' + validacion[1]
             else:
                 para_escribir['ultimo_xml'] = base64.encodebytes(attachment)
-            #except:
-            #    errores += 'Error de usuario! El archivo .xml no es un archivo .xml válido.'
         else:
             errores += 'Error de usuario! Ambos archivos son requeridos al adjuntar.'
         # parte final
@@ -274,8 +270,8 @@ class CustomerPortal(CustomerPortal):
                     })
                 values['upload_status_msg'] = 'Correcto'
                 order_sudo.write({'estado_rep_cfdi': 'cargado',
-                                  'l10n_mx_edi_cfdi_name': validacion[3] + '.xml',
-                                  'l10n_mx_edi_pac_status': 'retry'})
+                                  'l10n_mx_edi_cfdi_uuid': validacion[3],
+                                  'l10n_mx_edi_sat_status': 'undefined'})
         else:
             values['upload_status_msg'] = errores
         return request.render('portal_imjm.portal_my_pago', values)
@@ -329,10 +325,12 @@ class CustomerPortal(CustomerPortal):
         #uuid_factura = acc_paymnt_rec.communication
         uuid_factura = ''
         facturas_sin_uuid = ''
-        for linea in acc_paymnt_rec.reconciled_invoice_ids:
+        for linea in acc_paymnt_rec.reconciled_bill_ids:
+            print(linea)
             if not linea.l10n_mx_edi_cfdi_uuid:
                 facturas_sin_uuid = facturas_sin_uuid + linea.name + ' '
                 conteoe += 1
+                continue
             uuid_factura = uuid_factura + linea.l10n_mx_edi_cfdi_uuid + ' '
         if facturas_sin_uuid:
             errores += '\n -Las facturas %s asociadas a este pago no cuentan con archivo xml cargado, no es posible validar el pago.' % facturas_sin_uuid

@@ -68,36 +68,38 @@
         </xpath>
         <xpath expr="//t/t/t/tr" position="replace">
             <t t-if="order.release_date"><!-- analizar tambien que el invoice status NO sea facturado-->
-                <t t-if="order.invoice_status != 'invoiced'">
-                    <tr t-if="order.release_date &lt;= order.release_date.today() + relativedelta(day=1, months=1, days=-1)">
-                        <td>
-                            <a t-att-href="order.get_portal_url()">
-                                <t t-esc="order.name"/>
-                           </a>
-                        </td>
-                        <td class="text-center">
-                            <span t-field="order.date_approve"/>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <span t-field="order.release_date"/>
-                        </td>
-                        <td>
-                            <t t-if="order.state_invoice_portal is not False">
-                                <span t-field="order.state_invoice_portal"/>
-                            </t>
-                            <t t-else="">
-                                <span class="text-center"> Sin Factura</span>
-                            </t>
-                            <t t-if="order.state == 'cancel'">
-                                <span class="badge badge-pill badge-warning"><i class="fa fa-fw fa-remove" aria-label="Cancelled" title="Cancelled" role="img"/><span class="d-none d-md-inline"> Cancelada</span></span>
-                            </t>
-                        </td>
-                        <td class="text-right">
-                            <span t-field="order.amount_total" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
-                        </td>
-                    </tr>
+                <t t-if="order.approval is True">
+                    <t t-if="order.invoice_status != 'a'">
+                        <tr t-if="order.release_date &lt;= order.release_date.today() + relativedelta(day=1, months=1, days=-1)">
+                            <td>
+                                <a t-att-href="order.get_portal_url()">
+                                    <t t-esc="order.name"/>
+                               </a>
+                            </td>
+                            <td class="text-center">
+                                <span t-field="order.date_approve"/>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <span t-field="order.release_date"/>
+                            </td>
+                            <td>
+                                <t t-if="order.state_invoice_portal is not False">
+                                    <span t-field="order.state_invoice_portal"/>
+                                </t>
+                                <t t-else="">
+                                    <span class="text-center"> Sin Factura</span>
+                                </t>
+                                <t t-if="order.state == 'cancel'">
+                                    <span class="badge badge-pill badge-warning"><i class="fa fa-fw fa-remove" aria-label="Cancelled" title="Cancelled" role="img"/><span class="d-none d-md-inline"> Cancelada</span></span>
+                                </t>
+                            </td>
+                            <td class="text-right">
+                                <span t-field="order.amount_total" t-options='{"widget": "monetary", "display_currency": order.currency_id}'/>
+                            </td>
+                        </tr>
+                    </t>
                 </t>
             </t>
         </xpath>
